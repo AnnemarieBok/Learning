@@ -1,0 +1,19 @@
+                           Azure
+                             │
+                      Resource Group
+                             │
+             ┌───────────┴───────────┐
+             │                              │
+         Networking                     Monitoring
+            │                               │
+    ┌─────┴─────┐                  Log Analytics
+    │              │    
+   VNet            NSGs
+    │
+ ┌─┴─────────────┐
+ │                   │
+Subnet             Subnet
+ │                   │
+Web tier         App/data tier
+ │
+Virtual Machine
