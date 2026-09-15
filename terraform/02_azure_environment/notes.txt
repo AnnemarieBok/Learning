@@ -1,4 +1,6 @@
-                           Azure
+Structure that needs to be created in the exercise:
+ 
+                          Azure
                              │
                       Resource Group
                              │
@@ -17,3 +19,253 @@ Subnet             Subnet
 Web tier         App/data tier
  │
 Virtual Machine
+
+Day 1 — Project structure & Resource Group
+
+Start with a clean structure:
+
+terraform/
+└── 02-azure/
+    └── 02-web-application/
+        ├── main.tf
+        ├── providers.tf
+        ├── variables.tf
+        ├── outputs.tf
+        └── .gitignore
+
+You'll learn:
+
+Terraform project structure
+Provider configuration
+Variables
+Outputs
+Resource groups
+Terraform formatting/validation
+Git workflow
+
+Create:
+
+Resource Group
+
+For example:
+
+rg-terraform-webapp-dev
+
+Don't worry about creating the whole architecture yet.
+
+Day 2 — Variables and reusable configuration
+
+Instead of hardcoding everything, introduce variables.
+
+For example:
+
+variable "location" {
+  description = "Azure region"
+  type        = string
+  default     = "West Europe"
+}
+
+Then:
+
+resource "azurerm_resource_group" "main" {
+  name     = "rg-terraform-webapp-dev"
+  location = var.location
+}
+
+You'll learn:
+
+variable
+   ↓
+var.location
+   ↓
+resource
+
+Then add outputs:
+
+output "resource_group_name" {
+  value = azurerm_resource_group.main.name
+}
+
+This is where splitting main.tf, variables.tf, and outputs.tf starts becoming useful.
+
+Day 3 — Azure networking
+
+Now things get more interesting.
+
+Create:
+
+Virtual Network
+       │
+       ├── Web subnet
+       │
+       └── App subnet
+
+You'll work with:
+
+azurerm_virtual_network
+azurerm_subnet
+CIDR notation
+Resource references
+Dependencies
+
+For example:
+
+VNet:       10.0.0.0/16
+
+Web subnet: 10.0.1.0/24
+App subnet: 10.0.2.0/24
+
+This is a great opportunity to understand something important:
+
+Terraform doesn't just execute resources from top to bottom. It builds a dependency graph.
+
+For example:
+
+Resource Group
+      ↓
+Virtual Network
+      ↓
+Subnet
+Day 4 — Network Security Groups
+
+Now secure the network.
+
+Create an NSG for the web tier.
+
+Conceptually:
+
+Internet
+   │
+   │ HTTP/HTTPS
+   ▼
+Web subnet
+   │
+   │
+   ▼
+Application
+
+You'll define rules such as:
+
+Allow HTTPS
+Allow HTTP
+Deny/limit unwanted traffic
+
+You'll learn about:
+
+NSGs
+Security rules
+Terraform nested blocks
+Associations
+Why network security is separate from the subnet itself
+
+This is also a good day to deliberately make a mistake, run:
+
+terraform plan
+
+and understand exactly what Terraform wants to change.
+
+Day 5 — Virtual Machine
+
+Now put an actual compute resource into the environment.
+
+For example:
+
+Resource Group
+      │
+     VNet
+      │
+   Web subnet
+      │
+      VM
+
+You could create a small Linux VM.
+
+You'll learn about:
+
+VM resources
+Network interfaces
+Public/private IP concepts
+SSH
+Resource dependencies
+Sensitive values
+
+This is where the project starts feeling like an actual Azure environment.
+
+Important: VM resources can incur Azure charges, so we'd use the smallest suitable configuration and keep the environment temporary. We can also design the exercise so that you can complete a lot of the work with validate/plan before actually deploying anything.
+
+Day 6 — Variables, locals and outputs
+
+Now refactor what you've built.
+
+Instead of:
+
+main.tf
+
+becomes:
+
+02-web-application/
+│
+├── main.tf
+├── providers.tf
+├── variables.tf
+├── outputs.tf
+├── locals.tf
+└── terraform.tfvars
+
+You'll learn why each exists.
+
+For example:
+
+variables.tf
+
+Defines what the user can configure.
+
+terraform.tfvars
+
+Provides the values.
+
+locals.tf
+
+Defines values calculated/constructed inside the configuration.
+
+outputs.tf
+
+Defines what Terraform should report back.
+
+This will give you much better Terraform habits than putting everything into main.tf.
+
+Day 7 — Make it feel like a real project
+
+Finally, introduce modules.
+
+You could end up with:
+
+02-web-application/
+│
+├── main.tf
+├── providers.tf
+├── variables.tf
+├── outputs.tf
+├── terraform.tfvars
+│
+└── modules/
+    │
+    ├── networking/
+    │   ├── main.tf
+    │   ├── variables.tf
+    │   └── outputs.tf
+    │
+    └── virtual-machine/
+        ├── main.tf
+        ├── variables.tf
+        └── outputs.tf
+
+Then your root configuration becomes more like:
+
+main.tf
+   │
+   ├── networking module
+   │
+   └── virtual-machine module
+
+That's a big conceptual step, so I wouldn't introduce modules until you've built the environment without them first.
