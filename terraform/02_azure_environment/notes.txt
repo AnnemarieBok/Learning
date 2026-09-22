@@ -82,9 +82,6 @@ resource
 
 Then add outputs:
 
-output "resource_group_name" {
-  value = azurerm_resource_group.main.name
-}
 
 This is where splitting main.tf, variables.tf, and outputs.tf starts becoming useful.
 
@@ -132,10 +129,7 @@ Now secure the network.
 
 Create an NSG for the web tier.
 
-Conceptually:
 
-Internet
-   │
    │ HTTP/HTTPS
    ▼
 Web subnet
