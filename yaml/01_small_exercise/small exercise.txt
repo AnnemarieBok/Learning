@@ -1,0 +1,124 @@
+YAML Practice Exercise: Build a Project Configuration
+Imagine you're creating a configuration file for a small web application. Your job is to write the YAML file from the requirements below.
+
+Requirements
+Create a file called config.yaml containing:
+
+Application information
+
+Name: BookTracker
+
+Version: 1.4.0
+
+Environment: development
+
+Debugging should be enabled.
+
+Server configuration
+
+Host: localhost
+
+Port: 8080
+
+Use HTTPS: false
+
+Database configuration
+
+Type: postgresql
+
+Host: localhost
+
+Port: 5432
+
+Database name: booktracker
+
+Username: admin
+
+Password: secret123
+
+Features
+Create a list containing:
+
+bookmarks
+
+reviews
+
+recommendations
+
+notifications
+
+Users
+Create a list of two users:
+
+Alice, who is an admin and has an age of 32
+
+Bob, who is not an admin and has an age of 27
+
+Logging
+
+Level: info
+
+File: logs/app.log
+
+Rotation should be enabled.
+
+Your task
+Write the YAML yourself without looking up the syntax.
+
+A rough outline of the structure might be:
+
+application:
+  ...
+
+server:
+  ...
+
+database:
+  ...
+
+features:
+  ...
+
+users:
+  ...
+
+logging:
+  ...
+
+Bonus challenges
+After you've written the basic version, try these:
+
+Challenge 1 — Nested data
+
+Give each user an email address.
+
+Challenge 2 — Lists of objects
+
+Add a books section containing two books. Each book should have:
+
+title
+
+author
+
+year
+
+Challenge 3 — YAML booleans
+
+Add a setting called maintenance_mode and set it to false.
+
+Challenge 4 — Multiline text
+
+Add an about field containing this paragraph:
+
+BookTracker is a small application for keeping track of books, reviews, and recommendations. It helps users organize their reading history.
+
+Use YAML's multiline syntax (|) rather than putting the entire paragraph on one line.
+
+Challenge 5 — Anchors
+
+Once you're comfortable with the basics, try using a YAML anchor to define the database settings once and reuse them for a test_database.
+
+If you paste your solution here afterward, I can check it line-by-line and explain any YAML mistakes without simply giving you the answer first.
+
+
+

@@ -1,0 +1,60 @@
+#https://www.cloudbees.com/blog/yaml-tutorial-everything-you-need-get-started
+#https://support.atlassian.com/bitbucket-cloud/docs/yaml-anchors/
+---
+  application-information:
+    name: BookTracker
+    version: "1.4.0"
+    environment: development
+    debugging: true
+    about: |
+      BookTracker is a small application for keeping track of books, reviews, and recommendations. 
+      It helps users organize their reading history.
+
+  server-configuration:
+    host: localhost
+    port: 8080
+    use-https: false
+
+  database-configuration:
+    configuration: &database-configuration 
+      type: postgresql
+      host: localhost
+      port: 5432
+      database-name: booktracker
+      username: admin
+      password: secret123
+
+  test-database-configuration:
+    configuration: 
+      <<: *database-configuration
+      database-name: testBooktracker
+ 
+     
+    
+  features:
+    - bookmarks
+    - reviews
+    - recommendations
+    - notifications
+
+  users:
+    - {name: "Alice", role: "admin", age: 32, email: "alice@gmail.com"}
+    - {name: "Bob", role: "user", age: 27, email: "bob@gmail.com"}
+
+  books:
+    - title: "Alice in Wonderland"
+      author: "Somebody"
+      year: "Quite some time ago"
+    - title: "Kiss of the spider woman"
+      author: "Someone else"
+      year: "Dunno"
+
+
+  logging:
+    level: info
+    file: "logs/app.log"
+    rotation: true
+
+  
+  
+  
